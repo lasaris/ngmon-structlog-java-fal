@@ -21,6 +21,9 @@ public class InjectionAspect {
     @Before(value = "allMethodsInContext(logContext)", argNames = "joinPoint, logContext")
     public void before(JoinPoint joinPoint, LogContext logContext) {
         MethodSignature method = (MethodSignature) joinPoint.getSignature();
-        logContext.inject(method.getName(), method.getParameterNames(), joinPoint.getArgs());
+        String name = method.getParameterNames()[0];
+        Class clazz = method.getParameterTypes()[0];
+        Object value = joinPoint.getArgs()[0];
+        logContext.inject(name, clazz, value);
     }
 }

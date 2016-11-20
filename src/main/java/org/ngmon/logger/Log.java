@@ -11,18 +11,18 @@ public class Log<T extends LogContext> {
     }
 
     public T debug(String message) {
-        return msg("DEBUG", message);
+        return msg(EventLevel.DEBUG, message);
     }
 
     public T info(String message) {
-        return msg("INFO", message);
+        return msg(EventLevel.INFO, message);
     }
 
     public T error(String message) {
-        return msg("ERROR", message);
+        return msg(EventLevel.ERROR, message);
     }
 
-    private T msg(String level, String message) {
+    private T msg(EventLevel level, String message) {
         try {
             T instance = this.contextClass.newInstance();
             instance.setLevel(level);

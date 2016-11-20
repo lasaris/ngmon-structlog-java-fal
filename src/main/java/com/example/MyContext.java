@@ -48,7 +48,7 @@ public class MyContext extends LogContext {
         return this;
     }
 
-    public MyContext port(int i) {
+    public MyContext port(int port) {
         return this;
     }
 }

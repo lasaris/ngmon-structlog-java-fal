@@ -2,8 +2,6 @@ package com.example;
 
 import org.ngmon.logger.Log;
 
-import java.util.IllegalFormatException;
-
 public class App {
     public static void main(String[] args) {
 

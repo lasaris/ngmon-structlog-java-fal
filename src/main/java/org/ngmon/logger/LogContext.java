@@ -1,39 +1,33 @@
 package org.ngmon.logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class LogContext {
 
-    private Map<String, Integer> existenceMap = new HashMap<>();
-    private Map<String, Object> valueMap = new HashMap<>();
-    private String message;
-    private String level;
+    private LogEvent logEvent = new LogEvent();
     private Logger logger;
+    private EventLevel level;
+
 
     public void log() {
-        this.valueMap.put("event", message);
-        this.valueMap.put("level", level);
-        this.logger.log(this.valueMap);
+        this.logger.log(this.level, this.logEvent);
     }
 
-    void setLevel(String level) {
+    void setLevel(EventLevel level) {
         this.level = level;
     }
 
     void setMessage(String message) {
-        this.message = message;
+        this.logEvent.setMessage(message);
     }
 
     void setLogger(Logger logger) {
         this.logger = logger;
     }
 
-    void inject(String methodName, String[] parameterNames, Object[] args) {
-        for (int i = 0; i < parameterNames.length; i++) {
-            String parameterName = parameterNames[i];
-            Object argValue = args[i];
-            this.valueMap.put(parameterName, argValue);
+    void inject(String paramName, Class paramClass, Object paramValue) {
+        if (paramName.equals("message")) {
+            throw new IllegalArgumentException("Context parameter cannot be named 'message'");
         }
+
+        this.logEvent.put(paramName, paramClass, paramValue);
     }
 }
