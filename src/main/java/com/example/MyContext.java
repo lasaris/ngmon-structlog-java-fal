@@ -3,6 +3,8 @@ package com.example;
 import org.ngmon.logger.LogContext;
 import org.ngmon.logger.PassThrough;
 
+import java.util.List;
+
 public class MyContext extends LogContext {
 
     public MyContext ip(String ip) {
@@ -41,7 +43,7 @@ public class MyContext extends LogContext {
         return this;
     }
 
-    public MyContext exception(Exception exception) {
+    public MyContext exception(List<Exception> exceptions) {
         return this;
     }
 

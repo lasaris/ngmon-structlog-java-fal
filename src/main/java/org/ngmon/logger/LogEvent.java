@@ -1,20 +1,21 @@
 package org.ngmon.logger;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LogEvent {
 
     private Map<String, Integer> existenceMap = new HashMap<>();
-    private Map<Tuple2<String, Class>, Object> valueMap = new HashMap<>();
+    private Map<Tuple2<String, Type>, Object> valueMap = new HashMap<>();
     private String message;
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public void put(String paramName, Class paramClass, Object paramValue) {
-        this.valueMap.put(new Tuple2<>(getName(paramName), paramClass), paramValue);
+    public void put(String paramName, Type paramType, Object paramValue) {
+        this.valueMap.put(new Tuple2<>(getName(paramName), paramType), paramValue);
     }
 
     String getSignature() {

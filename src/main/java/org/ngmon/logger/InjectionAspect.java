@@ -6,6 +6,10 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+
 @Aspect
 public class InjectionAspect {
 
@@ -20,10 +24,12 @@ public class InjectionAspect {
      */
     @Before(value = "allMethodsInContext(logContext)", argNames = "joinPoint, logContext")
     public void before(JoinPoint joinPoint, LogContext logContext) {
-        MethodSignature method = (MethodSignature) joinPoint.getSignature();
-        String name = method.getParameterNames()[0];
-        Class clazz = method.getParameterTypes()[0];
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
+        Parameter parameter = method.getParameters()[0];
+        String name = parameter.getName();
+        Type type = parameter.getParameterizedType();
         Object value = joinPoint.getArgs()[0];
-        logContext.inject(name, clazz, value);
+        logContext.inject(name, type, value);
     }
 }

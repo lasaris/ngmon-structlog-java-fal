@@ -1,5 +1,7 @@
 package org.ngmon.logger;
 
+import java.lang.reflect.Type;
+
 public abstract class LogContext {
 
     private LogEvent logEvent = new LogEvent();
@@ -23,11 +25,11 @@ public abstract class LogContext {
         this.logger = logger;
     }
 
-    void inject(String paramName, Class paramClass, Object paramValue) {
+    void inject(String paramName, Type paramType, Object paramValue) {
         if (paramName.equals("message")) {
             throw new IllegalArgumentException("Context parameter cannot be named 'message'");
         }
 
-        this.logEvent.put(paramName, paramClass, paramValue);
+        this.logEvent.put(paramName, paramType, paramValue);
     }
 }
