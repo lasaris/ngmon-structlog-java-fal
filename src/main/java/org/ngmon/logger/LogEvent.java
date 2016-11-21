@@ -8,18 +8,29 @@ public class LogEvent {
 
     private Map<String, Integer> existenceMap = new HashMap<>();
     private Map<Tuple2<String, Type>, Object> valueMap = new HashMap<>();
-    private String message;
 
-    public void setMessage(String message) {
-        this.message = message;
+    void setMessage(String message) {
+        this.put("message", String.class, message);
     }
 
-    public void put(String paramName, Type paramType, Object paramValue) {
+    void put(String paramName, Type paramType, Object paramValue) {
         this.valueMap.put(new Tuple2<>(getName(paramName), paramType), paramValue);
     }
 
     String getSignature() {
-        return "Event" + String.valueOf(valueMap.entrySet().hashCode()) + "_" + message.hashCode();
+        Tuple2<String, Type> key = new Tuple2<>("message", String.class);
+        String message = (String) this.valueMap.get(key);
+        return "Event" + hash(valueMap.entrySet()) + "_" + hash(message);
+    }
+
+    private String hash(Object o) {
+        int hashCode = o.hashCode();
+        if (hashCode < 0) {
+            hashCode *= -1;
+            return "N" + hashCode;
+        } else {
+            return "P" + hashCode;
+        }
     }
 
     private String getName(String paramName) {
@@ -35,6 +46,6 @@ public class LogEvent {
 
     @Override
     public String toString() {
-        return getSignature() + "{" + "valueMap=" + valueMap + ", message='" + message + '\'' +'}';
+        return getSignature() + "{" + "valueMap=" + valueMap + '}';
     }
 }
