@@ -1,6 +1,7 @@
 package com.example;
 
 import org.ngmon.logger.LogContext;
+import org.ngmon.logger.PassThrough;
 
 public class MyContext extends LogContext {
 
@@ -48,7 +49,12 @@ public class MyContext extends LogContext {
         return this;
     }
 
+    @PassThrough()
     public MyContext port(int port) {
+        return real_port(20*port);
+    }
+
+    public MyContext real_port(int port) {
         return this;
     }
 }
