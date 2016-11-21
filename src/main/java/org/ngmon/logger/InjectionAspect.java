@@ -27,7 +27,7 @@ public class InjectionAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         Parameter parameter = method.getParameters()[0];
-        String name = parameter.getName();
+        String name = method.getName();
         Type type = parameter.getParameterizedType();
         Object value = joinPoint.getArgs()[0];
         logContext.inject(name, type, value);

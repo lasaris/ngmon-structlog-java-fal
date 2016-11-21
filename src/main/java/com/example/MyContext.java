@@ -7,56 +7,56 @@ import java.util.List;
 
 public class MyContext extends LogContext {
 
-    public MyContext ip(String ip) {
+    public MyContext ip(String string) {
         return this;
     }
 
-    public MyContext user(String user) {
+    public MyContext user(String string) {
         return this;
     }
 
-    public MyContext path(String path) {
+    public MyContext path(String string) {
         return this;
     }
 
-    public MyContext port(String port) {
+    public MyContext port(String string) {
         return this;
     }
 
-    public MyContext job(String job) {
+    public MyContext job(String string) {
         return this;
     }
 
-    public MyContext task(String task) {
+    public MyContext task(String string) {
         return this;
     }
 
-    public MyContext application(String application) {
+    public MyContext application(String string) {
         return this;
     }
 
-    public MyContext source(String source) {
+    public MyContext source(String string) {
         return this;
     }
 
-    public MyContext destination(String destination) {
+    public MyContext destination(String string) {
         return this;
     }
 
-    public MyContext exception(List<Exception> exceptions) {
+    public MyContext exception(List<Exception> exceptionList) {
         return this;
     }
 
-    public MyContext job_id(int job_id) {
+    public MyContext job_id(Integer integer) {
         return this;
     }
 
     @PassThrough()
-    public MyContext port(int port) {
-        return real_port(20*port);
+    public MyContext port(int integer) {
+        return real_port(20*integer);
     }
 
-    public MyContext real_port(int port) {
+    public MyContext real_port(int integer) {
         return this;
     }
 }
