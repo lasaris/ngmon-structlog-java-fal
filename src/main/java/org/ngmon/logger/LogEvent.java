@@ -19,8 +19,7 @@ public class LogEvent {
     }
 
     String getSignature() {
-        final String s = "Event" + String.valueOf(valueMap.entrySet().hashCode()) + "_" + message.hashCode();
-        return s;
+        return "Event" + String.valueOf(valueMap.entrySet().hashCode()) + "_" + message.hashCode();
     }
 
     private String getName(String paramName) {
