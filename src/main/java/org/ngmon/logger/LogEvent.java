@@ -35,9 +35,6 @@ public class LogEvent {
 
     @Override
     public String toString() {
-        return getSignature() + "{" +
-                "valueMap=" + valueMap +
-                ", message='" + message + '\'' +
-                '}';
+        return getSignature() + "{" + "valueMap=" + valueMap + ", message='" + message + '\'' +'}';
     }
 }
