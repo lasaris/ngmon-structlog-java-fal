@@ -10,7 +10,7 @@ public abstract class LogContext {
 
 
     public void log() {
-        this.logger.log(this.level, this.logEvent);
+        this.logger.log(this.level, this.logEvent, this.logEvent.getSignature());
     }
 
     void setLevel(EventLevel level) {

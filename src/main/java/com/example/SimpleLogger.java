@@ -10,12 +10,34 @@ import org.ngmon.logger.LogEvent;
 import org.ngmon.logger.Logger;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleLogger implements Logger {
 
-    public void log(EventLevel level, LogEvent logEvent) {
-        Schema schema = logEvent.getSchema();
+    private Map<String, Schema> schemaMap = new HashMap<>();
+
+    public void log(EventLevel level, LogEvent logEvent, String signature) {
+        Schema schema;
+
+        if (!this.schemaMap.containsKey(signature)) {
+            schema = logEvent.getSchema();
+            this.schemaMap.put(signature, schema);
+
+            try {
+                FileOutputStream out = new FileOutputStream("schemas/" + signature + ".avsc");
+                out.write(schema.toString(true).getBytes());
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            schema = this.schemaMap.get(signature);
+        }
+
         GenericRecord data = logEvent.getData(schema);
 
         try {

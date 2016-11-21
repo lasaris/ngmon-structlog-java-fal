@@ -12,6 +12,7 @@ public class App {
         LOG.debug("hello").job_id(456).job("yiipp").log();
         LOG.error("Eagle has landed!").application("ThisAPP").port(554).log();
         LOG.error("Gregzo").exception(Arrays.asList(new RuntimeException("Whee"), new IllegalArgumentException("Deee"))).log();
-
+        LOG.info("Just Message").log();
+        LOG.info("hello").job("yiipp").job_id(456).log();
     }
 }
