@@ -27,7 +27,7 @@ public class LogEvent {
     String getSignature() {
         Tuple2<String, Type> key = new Tuple2<>("message", String.class);
         String message = (String) this.valueMap.get(key);
-        return "Event" + hash(valueMap.entrySet()) + "_" + hash(message);
+        return "Event_" + hash(valueMap.keySet()) + "_" + hash(message);
     }
 
     private String hash(Object o) {
