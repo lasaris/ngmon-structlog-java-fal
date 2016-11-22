@@ -7,8 +7,8 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.reflect.ReflectData;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LogEvent {
 
@@ -27,7 +27,10 @@ public class LogEvent {
     String getSignature() {
         Tuple2<String, Type> key = new Tuple2<>("message", String.class);
         String message = (String) this.valueMap.get(key);
-        return "Event_" + hash(valueMap.keySet()) + "_" + hash(message);
+        Set<Tuple2<String, Type>> keySet1 = valueMap.keySet();
+        List<String> sortedList = keySet1.stream().map(tuple2 -> tuple2.f0 + tuple2.f1.hashCode()).collect(Collectors.toList());
+        Collections.sort(sortedList);
+        return "Event_" + hash(sortedList) + "_" + hash(message);
     }
 
     private String hash(Object o) {
