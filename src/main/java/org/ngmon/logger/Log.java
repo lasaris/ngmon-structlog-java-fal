@@ -1,7 +1,6 @@
 package org.ngmon.logger;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class Log<T extends LogContext> {
         Method[] declaredMethods = contextClass.getDeclaredMethods();
         Set<String> sett = new HashSet<>();
         for (Method method : declaredMethods) {
-            if (method.getAnnotation(PassThrough.class) == null) {
+            if (method.getAnnotation(Var.class) != null) {
                 if (!sett.add(method.getName())) {
                     throw new IllegalArgumentException(contextClass.getName() + " contains overloaded methods/variables");
                 }
