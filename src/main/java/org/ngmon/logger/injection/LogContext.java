@@ -1,4 +1,7 @@
-package org.ngmon.logger;
+package org.ngmon.logger.injection;
+
+import org.ngmon.logger.enums.EventLevel;
+import org.ngmon.logger.Logger;
 
 import java.lang.reflect.Type;
 
@@ -13,15 +16,15 @@ public abstract class LogContext {
         this.logger.log(this.level, this.logEvent, this.logEvent.getSignature());
     }
 
-    void setLevel(EventLevel level) {
+    public void setLevel(EventLevel level) {
         this.level = level;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.logEvent.setMessage(message);
     }
 
-    void setLogger(Logger logger) {
+    public void setLogger(Logger logger) {
         this.logger = logger;
     }
 

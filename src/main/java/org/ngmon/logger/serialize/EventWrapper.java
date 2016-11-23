@@ -1,4 +1,6 @@
-package org.ngmon.logger;
+package org.ngmon.logger.serialize;
+
+import org.ngmon.logger.enums.EventLevel;
 
 public class EventWrapper {
 

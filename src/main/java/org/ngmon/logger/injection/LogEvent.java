@@ -1,10 +1,11 @@
-package org.ngmon.logger;
+package org.ngmon.logger.injection;
 
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.reflect.ReflectData;
+import org.ngmon.logger.common.Tuple2;
 
 import java.lang.reflect.Type;
 import java.util.*;

@@ -4,11 +4,13 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.reflect.ReflectData;
 import org.ngmon.logger.*;
+import org.ngmon.logger.common.Tuple2;
+import org.ngmon.logger.enums.EventLevel;
+import org.ngmon.logger.injection.LogEvent;
+import org.ngmon.logger.serialize.EventWrapper;
+import org.ngmon.logger.serialize.Serializer;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 

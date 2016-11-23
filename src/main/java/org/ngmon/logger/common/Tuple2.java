@@ -1,4 +1,4 @@
-package org.ngmon.logger;
+package org.ngmon.logger.common;
 
 public class Tuple2<T0, T1> {
 

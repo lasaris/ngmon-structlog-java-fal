@@ -1,4 +1,4 @@
-package org.ngmon.logger;
+package org.ngmon.logger.enums;
 
 public enum EventLevel {
         DEBUG("DEBUG"),

@@ -1,4 +1,4 @@
-package org.ngmon.logger;
+package org.ngmon.logger.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

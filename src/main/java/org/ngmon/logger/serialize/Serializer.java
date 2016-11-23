@@ -1,4 +1,4 @@
-package org.ngmon.logger;
+package org.ngmon.logger.serialize;
 
 import org.apache.avro.Schema;
 import org.apache.avro.io.Encoder;

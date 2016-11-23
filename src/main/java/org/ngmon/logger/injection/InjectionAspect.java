@@ -1,4 +1,4 @@
-package org.ngmon.logger;
+package org.ngmon.logger.injection;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +16,7 @@ public class InjectionAspect {
     /**
      * Intercepts execution of all methods declared within subclasses of LogContext.
      */
-    @Pointcut("execution(* org.ngmon.logger.LogContext+.*(..)) && !execution(* org.ngmon.logger.LogContext.*(..)) && target(logContext) && @annotation(org.ngmon.logger.Var)")
+    @Pointcut("execution(* org.ngmon.logger.injection.LogContext+.*(..)) && !execution(* org.ngmon.logger.injection.LogContext.*(..)) && target(logContext) && @annotation(org.ngmon.logger.annotation.Var)")
     public void allMethodsInContext(LogContext logContext) {}
 
     /**
