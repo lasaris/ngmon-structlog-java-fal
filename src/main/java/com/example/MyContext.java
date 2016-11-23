@@ -4,7 +4,9 @@ import org.ngmon.logger.injection.LogContext;
 import org.ngmon.logger.annotation.VarContext;
 import org.ngmon.logger.annotation.Var;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @VarContext
 public class MyContext extends LogContext {
@@ -55,7 +57,7 @@ public class MyContext extends LogContext {
     }
 
     @Var
-    public MyContext exception(List<Exception> exceptionList) {
+    public MyContext exceptionList(List<Exception> exceptionList) {
         return this;
     }
 
@@ -71,5 +73,20 @@ public class MyContext extends LogContext {
     @Var
     public MyContext real_port(int integer) {
         return this;
+    }
+
+    public MyContext stacktrace(StackTraceElement[] stackTrace) {
+        List<String> list = Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.toList());
+        return stacktrace(list);
+    }
+
+    @Var
+    public MyContext stacktrace(List<String> stackTrace) {
+        return this;
+    }
+
+    @Var
+    public MyContext exception(Exception e) {
+        return stacktrace(e.getStackTrace());
     }
 }
