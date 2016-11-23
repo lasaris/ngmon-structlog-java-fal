@@ -58,7 +58,8 @@ public class LogEvent {
     public Schema getSchema() {
         SchemaBuilder.FieldAssembler<Schema> fieldAssembler = SchemaBuilder.record(getSignature()).namespace("logger").fields();
         for (Tuple2<String, Type> tuple2 : this.valueMap.keySet()) {
-            fieldAssembler = fieldAssembler.name(tuple2.f0).type(this.reflectData.getSchema(tuple2.f1)).noDefault();
+            Schema fieldSchema = Schema.createUnion(Arrays.asList(SchemaBuilder.builder().nullType(), this.reflectData.getSchema(tuple2.f1)));
+            fieldAssembler = fieldAssembler.name(tuple2.f0).type(fieldSchema).noDefault();
         }
         return fieldAssembler.endRecord();
     }

@@ -11,8 +11,8 @@ public class App {
         Log<MyContext> LOG = new Log<>(MyContext.class, new SimpleLogger());
 
         try {
-            throw new IOException("The input/output has failed!");
-        } catch (IOException e) {
+            throw new Exception("The input/output has failed!");
+        } catch (Exception e) {
             LOG.error(e.getClass().getSimpleName() + e.getMessage()).stacktrace(e.getStackTrace()).log();
             LOG.info("Whoops..").exception(e).log();
         }
