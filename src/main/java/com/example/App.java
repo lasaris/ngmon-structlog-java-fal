@@ -1,27 +1,17 @@
 package com.example;
 
-import org.ngmon.logger.Log;
-
-import java.io.IOException;
-import java.util.Arrays;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import org.ngmon.logger.StructLog;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonMappingException {
 
-        Log<MyContext> LOG = new Log<>(MyContext.class, new SimpleLogger());
+        StructLog<MyContext> LOG = new StructLog<>(MyContext.class, new SimpleLogger());
 
-        try {
-            throw new Exception("The input/output has failed!");
-        } catch (Exception e) {
-            LOG.error(e.getClass().getSimpleName() + e.getMessage()).stacktrace(e.getStackTrace()).log();
-            LOG.info("Whoops..").exception(e).log();
-        }
-
-        LOG.debug("DebugMessage job").job_id(456).job("hadoop").log();
-        LOG.error("Eagle has landed!").application("ThisAPP").port(554).log();
-        LOG.error("Gregzo").exceptionList(Arrays.asList(new RuntimeException("Whee"), new IllegalArgumentException("Deee"))).log();
-        LOG.info("Just Message").log();
-        LOG.info("hello").job("yiipp").job_id(456).log();
+        LOG.error("jesus").ip("192.168.0.1").ip("192.168.0.2").log();
+        LOG.error("jesus1").ip("192.168.0.1").ip("192.168.0.2").log();
+        LOG.info("jesus2").ip("192.168.0.1").ip("192.168.0.2").job_id(9999).log();
+        LOG.error("jesus3").ip("192.168.0.1").ip("192.168.0.2").port(52).log();
 
     }
 }

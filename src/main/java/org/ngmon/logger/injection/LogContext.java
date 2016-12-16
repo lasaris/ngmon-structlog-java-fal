@@ -1,16 +1,19 @@
 package org.ngmon.logger.injection;
 
+import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
+import org.ngmon.logger.common.Tuple2;
 import org.ngmon.logger.enums.EventLevel;
 import org.ngmon.logger.Logger;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 public abstract class LogContext {
 
     private LogEvent logEvent = new LogEvent();
     private Logger logger;
     private EventLevel level;
-
+    private Map<String, Tuple2<Type, JsonSchema>> varCache;
 
     public void log() {
         this.logger.log(this.level, this.logEvent, this.logEvent.getSignature());
@@ -28,11 +31,12 @@ public abstract class LogContext {
         this.logger = logger;
     }
 
-    void inject(String paramName, Type paramType, Object paramValue) {
-        if (paramName.equals("message")) {
-            throw new IllegalArgumentException("Context parameter cannot be named 'message'");
-        }
+    public void setVarCache(Map<String, Tuple2<Type, JsonSchema>> varCache) {
+        this.varCache = varCache;
+    }
 
-        this.logEvent.put(paramName, paramType, paramValue);
+    protected void inject(String paramName, Object paramValue) {
+        Tuple2<Type, JsonSchema> tuple2 = varCache.get(paramName);
+        this.logEvent.put(paramName, tuple2.f0, tuple2.f1, paramValue);
     }
 }

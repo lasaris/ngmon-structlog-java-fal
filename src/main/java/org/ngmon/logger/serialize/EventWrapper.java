@@ -1,15 +1,20 @@
 package org.ngmon.logger.serialize;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ngmon.logger.enums.EventLevel;
 
 public class EventWrapper {
 
+    @JsonProperty(required = true)
     private String schemaId;
+    @JsonProperty(required = true)
     private long timestamp;
+    @JsonProperty(required = true)
     private EventLevel eventLevel;
-    private byte[] payload;
+    @JsonProperty(required = true)
+    private String payload;
 
-    public EventWrapper(String schemaId, long timestamp, EventLevel eventLevel, byte[] payload) {
+    public EventWrapper(String schemaId, long timestamp, EventLevel eventLevel, String payload) {
         this.schemaId = schemaId;
         this.timestamp = timestamp;
         this.eventLevel = eventLevel;
@@ -28,7 +33,7 @@ public class EventWrapper {
         return eventLevel;
     }
 
-    public byte[] getPayload() {
+    public String getPayload() {
         return payload;
     }
 }

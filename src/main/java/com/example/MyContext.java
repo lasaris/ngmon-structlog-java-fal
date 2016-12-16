@@ -1,92 +1,94 @@
 package com.example;
 
-import org.ngmon.logger.injection.LogContext;
-import org.ngmon.logger.annotation.VarContext;
 import org.ngmon.logger.annotation.Var;
+import org.ngmon.logger.annotation.VarContext;
+import org.ngmon.logger.injection.LogContext;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @VarContext
 public class MyContext extends LogContext {
 
     @Var
     public MyContext ip(String string) {
+        this.inject("ip", string);
         return this;
     }
 
     @Var
     public MyContext user(String string) {
+        this.inject("user", string);
         return this;
     }
 
     @Var
     public MyContext path(String string) {
+        this.inject("path", string);
         return this;
     }
 
     @Var
     public MyContext port(String string) {
+        this.inject("port", string);
         return this;
     }
 
     @Var
     public MyContext job(String string) {
+        this.inject("job", string);
         return this;
     }
 
     @Var
     public MyContext task(String string) {
+        this.inject("task", string);
         return this;
     }
 
     @Var
     public MyContext application(String string) {
+        this.inject("application", string);
         return this;
     }
 
     @Var
     public MyContext source(String string) {
+        this.inject("source", string);
         return this;
     }
 
     @Var
     public MyContext destination(String string) {
+        this.inject("destination", string);
         return this;
     }
 
     @Var
-    public MyContext exceptionList(List<Exception> exceptionList) {
+    public MyContext exceptionList(List<Double> exceptionList) {
+        this.inject("exceptionList", exceptionList);
         return this;
     }
 
     @Var
     public MyContext job_id(Integer integer) {
+        this.inject("job_id", integer);
         return this;
     }
 
-    public MyContext port(int integer) {
+    public MyContext port(Integer integer) {
         return real_port(20*integer);
     }
 
     @Var
-    public MyContext real_port(int integer) {
+    public MyContext real_port(Integer integer) {
+        this.inject("real_port", integer);
         return this;
-    }
-
-    public MyContext stacktrace(StackTraceElement[] stackTrace) {
-        List<String> list = Arrays.stream(stackTrace).map(StackTraceElement::toString).collect(Collectors.toList());
-        return stacktrace(list);
     }
 
     @Var
     public MyContext stacktrace(List<String> stackTrace) {
+        this.inject("stacktrace", stackTrace);
         return this;
     }
 
-    @Var
-    public MyContext exception(Exception e) {
-        return stacktrace(e.getStackTrace());
-    }
 }

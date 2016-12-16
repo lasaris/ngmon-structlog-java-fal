@@ -1,47 +1,69 @@
 package com.example;
 
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.reflect.ReflectData;
-import org.ngmon.logger.*;
-import org.ngmon.logger.common.Tuple2;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonSchema.factories.SchemaFactoryWrapper;
+import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
+import org.ngmon.logger.Logger;
 import org.ngmon.logger.enums.EventLevel;
 import org.ngmon.logger.injection.LogEvent;
 import org.ngmon.logger.serialize.EventWrapper;
-import org.ngmon.logger.serialize.Serializer;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleLogger implements Logger {
 
-    private Map<String, Tuple2<Schema, Serializer<GenericRecord>>> schemaMap = new HashMap<>();
-    private final Schema wrapperSchema = new ReflectData().getSchema(EventWrapper.class);
-    private final Serializer<EventWrapper> mainSerializer = new Serializer<>(wrapperSchema);
+    private final ObjectMapper mapper = new ObjectMapper();
+    private Map<String, JsonSchema> schemaMap = new HashMap<>();
+
+    public SimpleLogger() throws JsonMappingException {
+        JavaType javaType = this.mapper.constructType(EventWrapper.class);
+        SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+        this.mapper.acceptJsonFormatVisitor(javaType, visitor);
+        JsonSchema wrapperSchema = visitor.finalSchema();
+        wrapperSchema.set$schema("http://json-schema.org/draft-03/schema#");
+        createSchemaFile("wrapper", "EventWrapper", wrapperSchema);
+    }
 
     public void log(EventLevel level, LogEvent logEvent, String signature) {
-        Tuple2<Schema, Serializer<GenericRecord>> tuple2 = getCachedType(signature, logEvent);
+        JsonSchema _s = getCachedType(signature, logEvent);
         try {
             long timestamp = System.currentTimeMillis();
-            byte[] payload = tuple2.f1.serialize(logEvent.getData(tuple2.f0));
-            byte[] eventWrapperBytes = this.mainSerializer.serialize(new EventWrapper(signature, timestamp, level, payload));
-            System.out.println(new String(eventWrapperBytes));
+            String payload = this.mapper.writeValueAsString(logEvent.getValueMap());
+            String eventWrapperString = this.mapper.writeValueAsString(new EventWrapper(signature, timestamp, level, payload));
+            System.out.println(eventWrapperString);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private Tuple2<Schema, Serializer<GenericRecord>> getCachedType(String signature, LogEvent logEvent) {
-        Tuple2<Schema, Serializer<GenericRecord>> tuple2;
+    private JsonSchema getCachedType(String signature, LogEvent logEvent) {
+        JsonSchema schema;
         if (!this.schemaMap.containsKey(signature)) {
-            Schema schema = logEvent.getSchema();
-            Serializer<GenericRecord> serializer = new Serializer<>(schema);
-            tuple2 = new Tuple2<>(schema, serializer);
-            this.schemaMap.put(signature, tuple2);
+            schema = logEvent.getSchema();
+            this.schemaMap.put(signature, schema);
+            createSchemaFile("events", signature, schema);
         } else {
-            tuple2 = this.schemaMap.get(signature);
+            schema = this.schemaMap.get(signature);
         }
-        return tuple2;
+        return schema;
+    }
+
+    private void createSchemaFile(String namespace, String signature, JsonSchema schema) {
+        try {
+            String dir = "schemas/" + namespace.replace(".", "/") + "/";
+            Files.createDirectories(Paths.get(dir));
+            FileOutputStream out = new FileOutputStream(dir + signature + ".json");
+            out.write(this.mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(schema));
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

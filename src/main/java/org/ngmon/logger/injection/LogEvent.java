@@ -1,37 +1,42 @@
 package org.ngmon.logger.injection;
 
-import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.reflect.ReflectData;
-import org.ngmon.logger.common.Tuple2;
+import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
+import com.fasterxml.jackson.databind.jsonSchema.types.ObjectSchema;
+import com.fasterxml.jackson.databind.jsonSchema.types.StringSchema;
 
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LogEvent {
 
     private Map<String, Integer> existenceMap = new HashMap<>();
-    private Map<Tuple2<String, Type>, Object> valueMap = new HashMap<>();
-    private ReflectData reflectData = new ReflectData();
+    private Map<String, Object> valueMap = new HashMap<>();
+    private Map<String, JsonSchema> properties = new HashMap<>();
+    private List<String> signatureList = new ArrayList<>();
+    private ObjectSchema objectSchema = new ObjectSchema();
 
-    void setMessage(String message) {
-        this.put("message", String.class, message);
+    public LogEvent() {
+        objectSchema.set$schema("http://json-schema.org/draft-03/schema#");
+        objectSchema.setAdditionalProperties(ObjectSchema.NoAdditionalProperties.instance);
     }
 
-    void put(String paramName, Type paramType, Object paramValue) {
-        this.valueMap.put(new Tuple2<>(getName(paramName), paramType), paramValue);
+    void setMessage(String message) {
+        StringSchema stringSchema = new StringSchema();
+        stringSchema.setRequired(true);
+        this.put("message", String.class, stringSchema, message);
+    }
+
+    void put(String paramName, Type paramType, JsonSchema schema, Object paramValue) {
+        String uniqeName = getName(paramName);
+        this.valueMap.put(uniqeName, paramValue);
+        this.properties.put(uniqeName, schema);
+        this.signatureList.add(uniqeName + paramType.hashCode());
     }
 
     String getSignature() {
-        Tuple2<String, Type> key = new Tuple2<>("message", String.class);
-        String message = (String) this.valueMap.get(key);
-        Set<Tuple2<String, Type>> keySet1 = valueMap.keySet();
-        List<String> sortedList = keySet1.stream().map(tuple2 -> tuple2.f0 + tuple2.f1.hashCode()).collect(Collectors.toList());
-        Collections.sort(sortedList);
-        return "Event_" + hash(sortedList) + "_" + hash(message);
+        String message = (String) this.valueMap.get("message");
+        Collections.sort(this.signatureList);
+        return "Event_" + hash(this.signatureList) + "_" + hash(message);
     }
 
     private String hash(Object o) {
@@ -45,34 +50,25 @@ public class LogEvent {
     }
 
     private String getName(String paramName) {
-        Integer repetition = this.existenceMap.putIfAbsent(paramName, 2);
+        Integer repetition = this.existenceMap.get(paramName);
 
         if (repetition != null) {
             this.existenceMap.put(paramName, repetition + 1);
             return paramName + repetition;
         } else {
+            this.existenceMap.put(paramName, 2);
             return paramName;
         }
     }
 
-    public Schema getSchema() {
-        SchemaBuilder.FieldAssembler<Schema> fieldAssembler = SchemaBuilder.record(getSignature()).namespace("logger").fields();
-        for (Tuple2<String, Type> tuple2 : this.valueMap.keySet()) {
-            Schema fieldSchema = Schema.createUnion(Arrays.asList(SchemaBuilder.builder().nullType(), this.reflectData.getSchema(tuple2.f1)));
-            fieldAssembler = fieldAssembler.name(tuple2.f0).type(fieldSchema).noDefault();
-        }
-        return fieldAssembler.endRecord();
+    public JsonSchema getSchema() {
+        this.objectSchema.setProperties(properties);
+        this.objectSchema.setTitle(getSignature());
+        return this.objectSchema;
     }
 
-    public GenericRecord getData(Schema schema) {
-        GenericRecord data = new GenericData.Record(schema);
-        for (Map.Entry<Tuple2<String, Type>, Object> tuple2ObjectEntry : this.valueMap.entrySet()) {
-            Tuple2<String, Type> key = tuple2ObjectEntry.getKey();
-            String name = key.f0;
-            Object value = tuple2ObjectEntry.getValue();
-            data.put(name, value);
-        }
-        return data;
+    public Map<String, Object> getValueMap() {
+        return this.valueMap;
     }
 
     @Override
