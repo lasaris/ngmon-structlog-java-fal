@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.ngmon.logger.Logger;
 import org.ngmon.logger.enums.EventLevel;
 import org.ngmon.logger.injection.LogEvent;
-import org.ngmon.logger.serialize.CachingLogRecordGenerator;
+import org.ngmon.logger.serialize.CachingSchemaGenerator;
 
 public class SimpleLogger implements Logger {
 
-    private final CachingLogRecordGenerator holder = new CachingLogRecordGenerator();
+    private final CachingSchemaGenerator holder = new CachingSchemaGenerator();
 
     public SimpleLogger() throws JsonMappingException {
     }

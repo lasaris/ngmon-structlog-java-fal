@@ -16,12 +16,12 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CachingLogRecordGenerator {
+public class CachingSchemaGenerator {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private Map<String, JsonSchema> schemaMap = new HashMap<>();
 
-    public CachingLogRecordGenerator() throws JsonMappingException {
+    public CachingSchemaGenerator() throws JsonMappingException {
         JavaType javaType = this.mapper.constructType(EventWrapper.class);
         SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
         this.mapper.acceptJsonFormatVisitor(javaType, visitor);
