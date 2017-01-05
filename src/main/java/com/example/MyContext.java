@@ -1,8 +1,8 @@
 package com.example;
 
-import org.ngmon.logger.annotation.Var;
-import org.ngmon.logger.annotation.VarContext;
-import org.ngmon.logger.injection.LogContext;
+import org.ngmon.structlog.annotation.Var;
+import org.ngmon.structlog.annotation.VarContext;
+import org.ngmon.structlog.injection.LogContext;
 
 import java.util.List;
 

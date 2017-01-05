@@ -1,14 +1,14 @@
-package org.ngmon.logger;
+package org.ngmon.structlog;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonSchema.factories.SchemaFactoryWrapper;
 import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
-import org.ngmon.logger.annotation.Var;
-import org.ngmon.logger.common.Tuple2;
-import org.ngmon.logger.enums.EventLevel;
-import org.ngmon.logger.injection.LogContext;
+import org.ngmon.structlog.annotation.Var;
+import org.ngmon.structlog.common.Tuple2;
+import org.ngmon.structlog.enums.EventLevel;
+import org.ngmon.structlog.injection.LogContext;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

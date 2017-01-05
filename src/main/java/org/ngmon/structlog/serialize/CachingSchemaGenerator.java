@@ -1,13 +1,11 @@
-package org.ngmon.logger.serialize;
+package org.ngmon.structlog.serialize;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonSchema.factories.SchemaFactoryWrapper;
 import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
-import org.ngmon.logger.enums.EventLevel;
-import org.ngmon.logger.injection.LogEvent;
+import org.ngmon.structlog.injection.LogEvent;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

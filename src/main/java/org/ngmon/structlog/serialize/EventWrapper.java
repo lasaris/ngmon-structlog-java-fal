@@ -1,7 +1,7 @@
-package org.ngmon.logger.serialize;
+package org.ngmon.structlog.serialize;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.ngmon.logger.enums.EventLevel;
+import org.ngmon.structlog.enums.EventLevel;
 
 public class EventWrapper {
 

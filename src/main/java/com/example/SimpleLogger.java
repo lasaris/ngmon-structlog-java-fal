@@ -3,9 +3,9 @@ package com.example;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.ngmon.logger.Logger;
-import org.ngmon.logger.enums.EventLevel;
-import org.ngmon.logger.injection.LogEvent;
+import org.ngmon.structlog.Logger;
+import org.ngmon.structlog.enums.EventLevel;
+import org.ngmon.structlog.injection.LogEvent;
 
 import java.io.IOException;
 import java.io.StringWriter;

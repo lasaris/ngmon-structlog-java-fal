@@ -1,4 +1,4 @@
-package org.ngmon.logger.injection;
+package org.ngmon.structlog.injection;
 
 import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
 import com.fasterxml.jackson.databind.jsonSchema.types.ObjectSchema;

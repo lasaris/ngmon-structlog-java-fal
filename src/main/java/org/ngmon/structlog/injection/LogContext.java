@@ -1,10 +1,10 @@
-package org.ngmon.logger.injection;
+package org.ngmon.structlog.injection;
 
 import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
-import org.ngmon.logger.common.Tuple2;
-import org.ngmon.logger.enums.EventLevel;
-import org.ngmon.logger.Logger;
-import org.ngmon.logger.serialize.CachingSchemaGenerator;
+import org.ngmon.structlog.common.Tuple2;
+import org.ngmon.structlog.enums.EventLevel;
+import org.ngmon.structlog.Logger;
+import org.ngmon.structlog.serialize.CachingSchemaGenerator;
 
 import java.lang.reflect.Type;
 import java.util.Map;

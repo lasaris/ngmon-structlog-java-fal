@@ -1,7 +1,7 @@
 package com.example;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.ngmon.logger.StructLog;
+import org.ngmon.structlog.StructLog;
 
 public class App {
     public static void main(String[] args) throws JsonMappingException {
