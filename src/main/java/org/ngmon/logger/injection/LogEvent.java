@@ -61,9 +61,9 @@ public class LogEvent {
         }
     }
 
-    public JsonSchema getSchema() {
+    public JsonSchema getSchema(String signature) {
         this.objectSchema.setProperties(properties);
-        this.objectSchema.setTitle(getSignature());
+        this.objectSchema.setTitle(signature);
         return this.objectSchema;
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
 import org.ngmon.logger.common.Tuple2;
 import org.ngmon.logger.enums.EventLevel;
 import org.ngmon.logger.Logger;
+import org.ngmon.logger.serialize.CachingSchemaGenerator;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -14,9 +15,13 @@ public abstract class LogContext {
     private Logger logger;
     private EventLevel level;
     private Map<String, Tuple2<Type, JsonSchema>> varCache;
+    private final CachingSchemaGenerator schemaGenerator = new CachingSchemaGenerator();
+
 
     public void log() {
-        this.logger.log(this.level, this.logEvent, this.logEvent.getSignature());
+        String signature = this.logEvent.getSignature();
+        this.schemaGenerator.cacheType(signature, this.logEvent);
+        this.logger.log(this.level, this.logEvent, signature);
     }
 
     public void setLevel(EventLevel level) {

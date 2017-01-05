@@ -21,25 +21,22 @@ public class CachingSchemaGenerator {
     private final ObjectMapper mapper = new ObjectMapper();
     private Map<String, JsonSchema> schemaMap = new HashMap<>();
 
-    public CachingSchemaGenerator() throws JsonMappingException {
+    public CachingSchemaGenerator() {
         JavaType javaType = this.mapper.constructType(EventWrapper.class);
         SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
-        this.mapper.acceptJsonFormatVisitor(javaType, visitor);
+        try {
+            this.mapper.acceptJsonFormatVisitor(javaType, visitor);
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        }
         JsonSchema wrapperSchema = visitor.finalSchema();
         wrapperSchema.set$schema("http://json-schema.org/draft-03/schema#");
         createSchemaFile("wrapper", "EventWrapper", wrapperSchema);
     }
 
-    public String getRecord(EventLevel level, LogEvent logEvent, String signature) throws JsonProcessingException {
-        cacheType(signature, logEvent);
-        long timestamp = System.currentTimeMillis();
-        String payload = this.mapper.writeValueAsString(logEvent.getValueMap());
-        return this.mapper.writeValueAsString(new EventWrapper(signature, timestamp, level, payload));
-    }
-
-    private void cacheType(String signature, LogEvent logEvent) {
+    public void cacheType(String signature, LogEvent logEvent) {
         if (!this.schemaMap.containsKey(signature)) {
-            JsonSchema schema = logEvent.getSchema();
+            JsonSchema schema = logEvent.getSchema(signature);
             this.schemaMap.put(signature, schema);
             createSchemaFile("events", signature, schema);
         }
