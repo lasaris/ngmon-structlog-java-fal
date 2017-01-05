@@ -31,22 +31,18 @@ public class CachingSchemaGenerator {
     }
 
     public String getRecord(EventLevel level, LogEvent logEvent, String signature) throws JsonProcessingException {
-        JsonSchema _s = getCachedType(signature, logEvent);
+        cacheType(signature, logEvent);
         long timestamp = System.currentTimeMillis();
         String payload = this.mapper.writeValueAsString(logEvent.getValueMap());
         return this.mapper.writeValueAsString(new EventWrapper(signature, timestamp, level, payload));
     }
 
-    private JsonSchema getCachedType(String signature, LogEvent logEvent) {
-        JsonSchema schema;
+    private void cacheType(String signature, LogEvent logEvent) {
         if (!this.schemaMap.containsKey(signature)) {
-            schema = logEvent.getSchema();
+            JsonSchema schema = logEvent.getSchema();
             this.schemaMap.put(signature, schema);
             createSchemaFile("events", signature, schema);
-        } else {
-            schema = this.schemaMap.get(signature);
         }
-        return schema;
     }
 
     private void createSchemaFile(String namespace, String signature, JsonSchema schema) {
