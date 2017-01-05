@@ -15,12 +15,12 @@ public abstract class LogContext {
     private Logger logger;
     private EventLevel level;
     private Map<String, Tuple2<Type, JsonSchema>> varCache;
-    private final CachingSchemaGenerator schemaGenerator = new CachingSchemaGenerator();
+    private static CachingSchemaGenerator schemaGenerator = new CachingSchemaGenerator();
 
 
     public void log() {
         String signature = this.logEvent.getSignature();
-        this.schemaGenerator.cacheType(signature, this.logEvent);
+        schemaGenerator.cacheType(signature, this.logEvent);
         this.logger.log(this.level, this.logEvent, signature);
     }
 
