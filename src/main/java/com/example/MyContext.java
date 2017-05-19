@@ -2,12 +2,12 @@ package com.example;
 
 import org.ngmon.structlog.annotation.Var;
 import org.ngmon.structlog.annotation.VarContext;
-import org.ngmon.structlog.injection.LogContext;
+import org.ngmon.structlog.injection.VariableContext;
 
 import java.util.List;
 
 @VarContext
-public class MyContext extends LogContext {
+public class MyContext extends VariableContext {
 
     @Var
     public MyContext ip(String string) {
