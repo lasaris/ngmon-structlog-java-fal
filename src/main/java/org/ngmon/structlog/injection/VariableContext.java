@@ -9,7 +9,7 @@ import org.ngmon.structlog.serialize.CachingSchemaGenerator;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public abstract class LogContext {
+public abstract class VariableContext {
 
     private LogEvent logEvent = new LogEvent();
     private Logger logger;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
 import org.ngmon.structlog.annotation.Var;
 import org.ngmon.structlog.common.Tuple2;
 import org.ngmon.structlog.enums.EventLevel;
-import org.ngmon.structlog.injection.LogContext;
+import org.ngmon.structlog.injection.VariableContext;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class StructLog<T extends LogContext> {
+public class StructLog<T extends VariableContext> {
 
     private final Logger logger;
     private final Class<T> contextClass;
