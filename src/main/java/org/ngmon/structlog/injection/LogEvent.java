@@ -4,12 +4,9 @@ import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
 import com.fasterxml.jackson.databind.jsonSchema.types.ObjectSchema;
 import com.fasterxml.jackson.databind.jsonSchema.types.StringSchema;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.security.MessageDigest;
 import java.util.*;
 
 public class LogEvent {
@@ -42,7 +39,8 @@ public class LogEvent {
     String getSignature() {
         String message = (String) this.valueMap.get("message");
         Collections.sort(this.signatureList);
-        return "Event_" + hash(String.join("", this.signatureList)) + "_" + hash(message);
+        String join = StringUtils.join(this.signatureList.toArray(new String[this.signatureList.size()]));
+        return "Event_" + hash(join) + "_" + hash(message);
     }
 
     private String hash(String string) {
