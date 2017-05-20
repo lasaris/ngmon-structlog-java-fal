@@ -14,12 +14,9 @@ import java.util.Map;
 
 public class SimpleLogger implements Logger {
 
-    private JsonFactory jsonFactory = new JsonFactory();
-    private ObjectMapper mapper = new ObjectMapper();
+    private JsonFactory jsonFactory = new JsonFactory(new ObjectMapper());
 
-    public SimpleLogger() throws JsonMappingException {
-        jsonFactory.setCodec(mapper);
-    }
+    public SimpleLogger() throws JsonMappingException {}
 
     @Override
     public void log(EventLevel level, LogEvent logEvent, String signature) {
