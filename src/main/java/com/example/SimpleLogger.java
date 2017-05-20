@@ -3,6 +3,7 @@ package com.example;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ngmon.structlog.Logger;
 import org.ngmon.structlog.enums.EventLevel;
 import org.ngmon.structlog.injection.LogEvent;
@@ -14,8 +15,10 @@ import java.util.Map;
 public class SimpleLogger implements Logger {
 
     private JsonFactory jsonFactory = new JsonFactory();
+    private ObjectMapper mapper = new ObjectMapper();
 
     public SimpleLogger() throws JsonMappingException {
+        jsonFactory.setCodec(mapper);
     }
 
     @Override
