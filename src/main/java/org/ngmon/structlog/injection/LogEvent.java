@@ -24,6 +24,7 @@ public class LogEvent {
         StringSchema stringSchema = new StringSchema();
         stringSchema.setRequired(true);
         this.put("message", String.class, stringSchema, message);
+        objectSchema.setDescription(message);
     }
 
     void put(String paramName, Type paramType, JsonSchema schema, Object paramValue) {
