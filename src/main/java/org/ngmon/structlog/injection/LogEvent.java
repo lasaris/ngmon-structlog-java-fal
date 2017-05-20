@@ -3,8 +3,13 @@ package org.ngmon.structlog.injection;
 import com.fasterxml.jackson.databind.jsonSchema.types.JsonSchema;
 import com.fasterxml.jackson.databind.jsonSchema.types.ObjectSchema;
 import com.fasterxml.jackson.databind.jsonSchema.types.StringSchema;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.security.MessageDigest;
 import java.util.*;
 
 public class LogEvent {
@@ -31,23 +36,18 @@ public class LogEvent {
         String uniqeName = getName(paramName);
         this.valueMap.put(uniqeName, paramValue);
         this.properties.put(uniqeName, schema);
-        this.signatureList.add(uniqeName + paramType.hashCode());
+        this.signatureList.add(uniqeName + paramType.getTypeName());
     }
 
     String getSignature() {
         String message = (String) this.valueMap.get("message");
         Collections.sort(this.signatureList);
-        return "Event_" + hash(this.signatureList) + "_" + hash(message);
+        return "Event_" + hash(String.join("", this.signatureList)) + "_" + hash(message);
     }
 
-    private String hash(Object o) {
-        int hashCode = o.hashCode();
-        if (hashCode < 0) {
-            hashCode *= -1;
-            return "N" + hashCode;
-        } else {
-            return "P" + hashCode;
-        }
+    private String hash(String string) {
+        String sha1Hex = DigestUtils.sha1Hex(string);
+        return StringUtils.substring(sha1Hex, 0, 8);
     }
 
     private String getName(String paramName) {
